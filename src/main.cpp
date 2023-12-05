@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
-
+using namespace std;
 #define MOTOR_PIN 25
 
 // Update these with values suitable for your network.
@@ -19,6 +19,8 @@ const char* mqtt_server = "test.mosquitto.org";
 
 #define VRX_PIN  36 // ESP32 pin GPIO36 (ADC0) connected to VRX pin
 #define VRY_PIN  39 // ESP32 pin GPIO39 (ADC0) connected to VRY pin
+
+double dataFromClbk;
 
 String valueX = ""; // to store the X-axis value
 String valueY = ""; // to store the Y-axis value
@@ -60,7 +62,7 @@ void reconnect() {
       // subscribe
       client.subscribe(MQTT_SERIAL_SUBSCRIBE_CH);
       client.subscribe(MQTT_VELOCITY);
-      client.subscribe(MQTT_STEER);
+      //client.subscribe(MQTT_STEER);
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -72,12 +74,24 @@ void reconnect() {
 }
 
 void callback(char* topic, byte *payload, unsigned int length) {
-    Serial.println("-------new message from broker-----");
-    Serial.print("channel:");
-    Serial.println(topic);
-    Serial.print("data:");  
-    Serial.write(payload, length);
-    Serial.println();
+    //Serial.println("-------new message from broker-----");
+    //Serial.print("channel:");
+    //Serial.println(topic);
+    //Serial.print("data:");  
+    /*char messageTemp[] = "";
+    for (int i = 0; i < length; i++) 
+    { 
+      messageTemp[i] = (char)payload[i];
+    }
+    //Serial.write(payload, length);
+    dataFromClbk = stod(messageTemp);
+    //Serial.print(dataFromClbk);
+    
+    //Serial.println();
+    */
+
+
+  //stod to turn string to double   
 }
 
 void setup() {
@@ -101,6 +115,7 @@ void publishSerialData(const char *serialData){
 
   client.publish(MQTT_SERIAL_PUBLISH_CH, serialData);
 }
+
 void loop() {
   client.loop();
 
