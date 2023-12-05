@@ -60,7 +60,7 @@ void reconnect() {
     {
       Serial.println("connected");
       // subscribe
-      client.subscribe(MQTT_SERIAL_SUBSCRIBE_CH);
+      //client.subscribe(MQTT_SERIAL_SUBSCRIBE_CH);
       client.subscribe(MQTT_VELOCITY);
       //client.subscribe(MQTT_STEER);
     } else {
@@ -78,18 +78,16 @@ void callback(char* topic, byte *payload, unsigned int length) {
     //Serial.print("channel:");
     //Serial.println(topic);
     //Serial.print("data:");  
-    /*char messageTemp[] = "";
+    String messageTemp;
+
     for (int i = 0; i < length; i++) 
     { 
-      messageTemp[i] = (char)payload[i];
+      Serial.print((char)payload[i]);
+      messageTemp += ((char)payload[i]);
     }
     //Serial.write(payload, length);
-    dataFromClbk = stod(messageTemp);
+    dataFromClbk = stod(messageTemp.c_str());
     //Serial.print(dataFromClbk);
-    
-    //Serial.println();
-    */
-
 
   //stod to turn string to double   
 }
@@ -123,24 +121,12 @@ void loop() {
   valueX = analogRead(VRX_PIN);
   valueY = analogRead(VRY_PIN);
 
-
-  if (Serial.available())
-  {
-    String str = Serial.readStringUntil('\n');
-    publishSerialData(str.c_str());
-
-    //client.publish(MQTT_STEER, valueX.c_str());
-    //client.publish(MQTT_VELOCITY, valueY.c_str());
-  }
-
   // read X and Y analog values
+  int speed = dataFromClbk/8;
+  if (speed >= 0 && speed <= 255) {
+      analogWrite(MOTOR_PIN, speed);
 
-  if (Serial.available()) {
-      int speed = Serial.parseInt();
-      if (speed >= 0 && speed <= 255) {
-         analogWrite(MOTOR_PIN, speed);
-      }
-   }
+  //scale value of joystick so that it's between 0 and 255
 
   // print data to 
   /**
