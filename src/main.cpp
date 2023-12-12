@@ -82,7 +82,7 @@ void callback(char* topic, byte *payload, unsigned int length) {
 
     for (int i = 0; i < length; i++) 
     { 
-      Serial.print((char)payload[i]);
+      //Serial.print((char)payload[i]);
       messageTemp += ((char)payload[i]);
     }
     //Serial.write(payload, length);
@@ -118,13 +118,16 @@ void loop() {
   client.loop();
 
 
-  valueX = analogRead(VRX_PIN);
-  valueY = analogRead(VRY_PIN);
+  //valueX = analogRead(VRX_PIN);
+  //valueY = analogRead(VRY_PIN);
 
   // read X and Y analog values
   int speed = dataFromClbk/8;
   if (speed >= 0 && speed <= 255) {
+      if (speed !=0)
+        {Serial.println(speed);}
       analogWrite(MOTOR_PIN, speed);
+  }
 
   //scale value of joystick so that it's between 0 and 255
 
