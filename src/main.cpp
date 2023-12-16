@@ -5,12 +5,12 @@ using namespace std;
 #define MOTOR_PIN 25
 // defines pins numbers for ultrasonic
 #define TONE_PIN 12
-#define trigPin 18;
+#define trigPin 18
 const int echoPin = 19;
 
 // defines variables for ultrasonic
 long duration;
-int distance;
+int distance1 = 0;
 bool distanceTooClose;
 
 // Update these with values suitable for your network.
@@ -113,11 +113,11 @@ void ultrasonicSense()
   // Reads the echoPin, returns the sound wave travel time in microseconds
   duration = pulseIn(echoPin, HIGH);
   // Calculating the distance
-  distance = duration * 0.034 / 2;
+  distance1 = duration * 0.034 / 2;
   // Prints the distance on the Serial Monitor
   Serial.print("Distance: ");
-  Serial.println(distance);
-  if(distance < 60)
+  Serial.println(distance1);
+  if(distance1 < 60)
     distanceTooClose = HIGH;
 }
 
