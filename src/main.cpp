@@ -3,6 +3,7 @@
 #include <PubSubClient.h>
 using namespace std;
 #define MOTOR_PIN 25
+#define BUZZ_PIN 14
 // defines pins numbers for ultrasonic
 #define TONE_PIN 12
 #define trigPin 18
@@ -11,7 +12,7 @@ const int echoPin = 19;
 // defines variables for ultrasonic
 long duration;
 int distance1 = 0;
-bool distanceTooClose;
+bool distanceTooClose = LOW;
 
 // Update these with values suitable for your network.
 const char* ssid = "Mikey_Ilya";
@@ -118,9 +119,13 @@ void ultrasonicSense()
   distance1 = duration * 0.034 / 48;
   // Prints the distance on the Serial Monitor
   Serial.print("Distance: ");
-  Serial.println(distance1);
-  if(distance1 < 60)
+  Serial.print(distance1);
+  if(distance1 <= 2)
     distanceTooClose = HIGH;
+  else
+    distanceTooClose = LOW;
+  Serial.print(" TOO CLOSE? ");
+  Serial.println(distanceTooClose);
 }
 
 void setup() {
@@ -163,10 +168,14 @@ void loop() {
   }
   ultrasonicSense();
   client.publish(MQTT_PROX, to_string(distance1).c_str());
-  if(distanceTooClose == HIGH)
+  if(distanceTooClose)
   {
-    //Show on Display and make sound
-  } 
+    tone(BUZZ_PIN, 256);
+  }
+  else
+    noTone(BUZZ_PIN);
+  
+   
 
   //scale value of joystick so that it's between 0 and 255
 
