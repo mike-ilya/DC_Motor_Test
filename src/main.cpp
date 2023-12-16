@@ -3,6 +3,15 @@
 #include <PubSubClient.h>
 using namespace std;
 #define MOTOR_PIN 25
+// defines pins numbers for ultrasonic
+#define TONE_PIN 12
+#define trigPin 18;
+const int echoPin = 19;
+
+// defines variables for ultrasonic
+long duration;
+int distance;
+bool distanceTooClose;
 
 // Update these with values suitable for your network.
 const char* ssid = "Mikey_Ilya";
@@ -92,6 +101,26 @@ void callback(char* topic, byte *payload, unsigned int length) {
   //stod to turn string to double   
 }
 
+void ultrasonicSense()
+{
+  // Clears the trigPin
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(echoPin, HIGH);
+  // Calculating the distance
+  distance = duration * 0.034 / 2;
+  // Prints the distance on the Serial Monitor
+  Serial.print("Distance: ");
+  Serial.println(distance);
+  if(distance < 60)
+    distanceTooClose = HIGH;
+}
+
 void setup() {
   Serial.begin(9600);
   Serial.setTimeout(500);// Set time out for 
@@ -102,7 +131,9 @@ void setup() {
   Serial.setTimeout(5000);
   pinMode(MOTOR_PIN, OUTPUT);
   while (! Serial);
-  Serial.println("Speed 0 to 255");
+    Serial.println("Speed 0 to 255");
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+  pinMode(echoPin, INPUT); // Sets the echoPin as an Input
 }
 
 void publishSerialData(const char *serialData){
@@ -128,6 +159,11 @@ void loop() {
         {Serial.println(speed);}
       analogWrite(MOTOR_PIN, speed);
   }
+  ultrasonicSense();
+  if(distanceTooClose == HIGH)
+  {
+    //Show on Display and make sound
+  } 
 
   //scale value of joystick so that it's between 0 and 255
 
@@ -139,3 +175,5 @@ void loop() {
   Serial.println(valueY); 
   */
  }
+
+
