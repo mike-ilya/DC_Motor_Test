@@ -115,7 +115,7 @@ void ultrasonicSense()
   // Reads the echoPin, returns the sound wave travel time in microseconds
   duration = pulseIn(echoPin, HIGH);
   // Calculating the distance
-  distance1 = duration * 0.034 / 2;
+  distance1 = duration * 0.034 / 48;
   // Prints the distance on the Serial Monitor
   Serial.print("Distance: ");
   Serial.println(distance1);
