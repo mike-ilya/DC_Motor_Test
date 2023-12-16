@@ -26,6 +26,8 @@ const char* mqtt_server = "test.mosquitto.org";
 #define MQTT_VELOCITY "csc113/controller/vel"
 #define MQTT_STEER "csc113/controller/st"
 
+#define MQTT_PROX "csc113/controller/prox"
+
 #define VRX_PIN  36 // ESP32 pin GPIO36 (ADC0) connected to VRX pin
 #define VRY_PIN  39 // ESP32 pin GPIO39 (ADC0) connected to VRY pin
 
@@ -160,6 +162,7 @@ void loop() {
       analogWrite(MOTOR_PIN, speed);
   }
   ultrasonicSense();
+  client.publish(MQTT_PROX, to_string(distance1).c_str());
   if(distanceTooClose == HIGH)
   {
     //Show on Display and make sound
