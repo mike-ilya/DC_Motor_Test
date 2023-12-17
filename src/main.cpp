@@ -3,11 +3,15 @@
 #include <PubSubClient.h>
 using namespace std;
 #define MOTOR_PIN 25
+//buzzer pin
 #define BUZZ_PIN 14
-// defines pins numbers for ultrasonic
+//motor temp pin
+#define ThermistorPin 34
+int Vo;
+//ultrasonic pin
 #define TONE_PIN 12
 #define trigPin 18
-const int echoPin = 19;
+#define echoPin 19
 
 // defines variables for ultrasonic
 long duration;
@@ -174,6 +178,16 @@ void loop() {
   }
   else
     noTone(BUZZ_PIN);
+  
+  
+  /*
+  Vo = analogRead(ThermistorPin)-3600;
+
+
+  Serial.print("Temperature: "); 
+  Serial.print(Vo);
+  Serial.println(" F"); 
+  */
   
    
 
