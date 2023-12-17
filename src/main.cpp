@@ -33,6 +33,8 @@ const char* mqtt_server = "test.mosquitto.org";
 
 #define MQTT_PROX "csc113/controller/prox"
 
+#define MQTT_TEMP "csc113/controller/temp"
+
 #define VRX_PIN  36 // ESP32 pin GPIO36 (ADC0) connected to VRX pin
 #define VRY_PIN  39 // ESP32 pin GPIO39 (ADC0) connected to VRY pin
 
@@ -172,6 +174,7 @@ void loop() {
   }
   ultrasonicSense();
   client.publish(MQTT_PROX, to_string(distance1).c_str());
+
   if(distanceTooClose)
   {
     tone(BUZZ_PIN, 256);
@@ -179,14 +182,12 @@ void loop() {
   else
     noTone(BUZZ_PIN);
   
-  
-  
   Vo = analogRead(ThermistorPin)-3600;
-
 
   Serial.print("Temperature: "); 
   Serial.print(Vo);
-  Serial.println(" F"); 
+  Serial.println(" F");
+  client.publish(MQTT_TEMP, to_string(Vo).c_str());
   
   
    
