@@ -6,7 +6,7 @@ using namespace std;
 //buzzer pin
 #define BUZZ_PIN 14
 //motor temp pin
-#define ThermistorPin 34
+#define ThermistorPin 35
 int Vo;
 //ultrasonic pin
 #define TONE_PIN 12
@@ -180,17 +180,17 @@ void loop() {
     noTone(BUZZ_PIN);
   
   
-  /*
+  
   Vo = analogRead(ThermistorPin)-3600;
 
 
   Serial.print("Temperature: "); 
   Serial.print(Vo);
   Serial.println(" F"); 
-  */
+  
   
    
-
+  delay(300);
   //scale value of joystick so that it's between 0 and 255
 
   // print data to 
